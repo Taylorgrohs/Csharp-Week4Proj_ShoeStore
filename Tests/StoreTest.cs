@@ -149,6 +149,17 @@ namespace ShoeStore
 
       Assert.Equal(testBrandStores, resultBrandStores);
     }
+    [Fact]
+    public void Test_Update()
+    {
+      Store testStore = new Store("Walmart");
+      testStore.Save();
+      testStore.Update("Target");
+
+      Store newStore = new Store("Target");
+
+      Assert.Equal(newStore.GetName(), testStore.GetName());
+    }
 
     public void Dispose()
     {
