@@ -105,7 +105,7 @@ namespace ShoeStore
     {
       SqlConnection conn = DB.Connection();
       conn.Open();
-      SqlCommand cmd = new SqlCommand("DELETE FROM store;", conn);
+      SqlCommand cmd = new SqlCommand("DELETE FROM store; DBCC CHECKIDENT ('store', RESEED, 0)", conn);
       cmd.ExecuteNonQuery();
     }
 
@@ -124,7 +124,6 @@ namespace ShoeStore
 
       int foundStoreId = 0;
       string foundStoreName = null;
-      string foundStoreNumber = null;
 
       while(rdr.Read())
       {
@@ -179,7 +178,7 @@ namespace ShoeStore
       SqlConnection conn = DB.Connection();
       conn.Open();
 
-      SqlCommand cmd = new SqlCommand("INSERT INTO store_brand (store_id, brand_id) VALUES (@StoreId, @BrandId)", conn);
+      SqlCommand cmd = new SqlCommand("INSERT INTO store_brand (store_id, brand_id) VALUES(@StoreId, @BrandId)", conn);
       SqlParameter storeIdParameter = new SqlParameter();
       storeIdParameter.ParameterName = "@StoreId";
       storeIdParameter.Value = this.GetId();

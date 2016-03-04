@@ -75,7 +75,27 @@ namespace ShoeStore
       //Assert
       Assert.Equal(testBrand, foundBrand);
     }
+    [Fact]
+    public void Test_GetStore_RetrievesAllStoreWithBrand()
+    {
+      Store testStore = new Store("GameStop");
+      testStore.Save();
+      Store testStore2 = new Store("Walmart");
+      testStore2.Save();
 
+      Brand firstBrand = new Brand("Nike");
+      firstBrand.Save();
+
+      testStore.AddBrand(firstBrand);
+      testStore2.AddBrand(firstBrand);
+      List<Store> testStoreList = new List<Store> {testStore, testStore2};
+      List<Store> resultStoreList = firstBrand.GetStore();
+      foreach(Store i in resultStoreList)
+      {
+        Console.WriteLine(i.GetName() + i.GetId());
+      }
+      Assert.Equal(testStoreList, resultStoreList);
+    }
 
   }
 }

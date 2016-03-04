@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Shoe Stores</title>
+    <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css'>
+  </head>
+  <body>
+    <h1>List of stores that sell @Model["brand"].GetName()</h1>
+    <hr/>
+    @if(@Model["brandStores"].Count != 0)
+    {
+      <h4>@Model["brand"].GetName() is sold in these stores:</h4>
+      <ul>
+        @foreach(var store in Model["brandStores"])
+        {
+          <li><a href="/stores/@store.GetId()">@store.GetName()</a></li>
+        }
+      </ul>
+    }
+    <h4>Add a store that sells @Model["brand"].GetName()</h4>
+    <form action="/brand/add_store" method="post">
+      <input id='brand-id' name='brand-id' type='hidden' value='@Model["brand"].GetId()'>
+      <label for='store-id'>Select a store</label>
+      <select id='store-id' name='store-id' type='text'>
+        @foreach (var store in @Model["allStores"])
+        {
+          <option value='@store.GetId()'>@store.GetName()</option>
+        }
+      </select>
+      <button type='submit'>Add</button>
+    </form>
+    <h4><a href="/stores">View Stores</a></h4>
+    <h4><a href="/brands">View Brands</a></h4>
+  </body>
+</html>

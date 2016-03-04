@@ -69,11 +69,12 @@ namespace ShoeStore
       Get["/stores/{id}"] = parameters =>
       {
         Dictionary<string, object> model = new Dictionary<string, object>();
-        Store SelectedStore = Store.Find(parameters.id);
-        List<Brand> StoreBrand = SelectedStore.GetBrand();
+        Store selectedStore = Store.Find(parameters.id);
+        List<Brand> storeBrands = selectedStore.GetBrand();
         List<Brand> allBrands = Brand.GetAll();
-        model.Add("store", SelectedStore);
-        model.Add("StoreBrand", StoreBrand);
+
+        model.Add("store", selectedStore);
+        model.Add("storeBrands", storeBrands);
         model.Add("allBrands", allBrands);
         return View["store.cshtml", model];
       };
@@ -101,28 +102,28 @@ namespace ShoeStore
       };
       Get["store/delete/{id}"] = parameters =>
       {
-        Store SelectedStore = Store.Find(parameters.id);
-        return View["store_delete.cshtml", SelectedStore];
+        Store selectedStore = Store.Find(parameters.id);
+        return View["store_delete.cshtml", selectedStore];
       };
 
       Delete["store/delete/{id}"] = parameters =>
       {
-        Store SelectedStore = Store.Find(parameters.id);
-        SelectedStore.Delete();
+        Store selectedStore = Store.Find(parameters.id);
+        selectedStore.Delete();
         List<Store> allStores = Store.GetAll();
 
         return View["stores.cshtml", allStores];
       };
       Get["store/edit/{id}"] = parameters =>
      {
-       Store SelectedStore = Store.Find(parameters.id);
-       return View["store_edit.cshtml", SelectedStore];
+       Store selectedStore = Store.Find(parameters.id);
+       return View["store_edit.cshtml", selectedStore];
      };
 
      Patch["store/edit/{id}"] = parameters =>
      {
-       Store SelectedStore = Store.Find(parameters.id);
-       SelectedStore.Update(Request.Form["store-name"]);
+       Store selectedStore = Store.Find(parameters.id);
+       selectedStore.Update(Request.Form["store-name"]);
        List<Store> allStores = Store.GetAll();
 
        return View["stores.cshtml", allStores];

@@ -30,7 +30,7 @@ namespace ShoeStore
     {
       SqlConnection conn = DB.Connection();
       conn.Open();
-      SqlCommand cmd = new SqlCommand("DELETE FROM brand;", conn);
+      SqlCommand cmd = new SqlCommand("DELETE FROM brand; DELETE FROM store_brand; DBCC CHECKIDENT ('brand', RESEED, 0)", conn);
       cmd.ExecuteNonQuery();
     }
 
@@ -162,35 +162,35 @@ namespace ShoeStore
       }
     }
     public List<Store> GetStore()
-    {
-      SqlConnection conn = DB.Connection();
-      SqlDataReader rdr = null;
-      conn.Open();
-      List<Store> stores = new List<Store>{};
+   {
+     SqlConnection conn = DB.Connection();
+     SqlDataReader rdr = null;
+     conn.Open();
+     List<Store> stores = new List<Store>{};
 
-      SqlCommand cmd = new SqlCommand("SELECT store.* FROM store JOIN store_brand ON (store.id = store_brand.brand_id) JOIN brand ON (store_brand.brand_id = brand.id) WHERE brand.id = @BrandId", conn);
+     SqlCommand cmd = new SqlCommand("SELECT store.* FROM brand JOIN store_brand ON (store_brand.brand_id = brand.id) JOIN store ON (store.id = store_brand.store_id) WHERE brand.id = @BrandId;", conn);
 
-      SqlParameter brandIdParameter = new SqlParameter();
-      brandIdParameter.ParameterName = "@BrandId";
-      brandIdParameter.Value = this.GetId();
-      cmd.Parameters.Add(brandIdParameter);
-      rdr = cmd.ExecuteReader();
-      while (rdr.Read())
-      {
-        int storeId = rdr.GetInt32(0);
-        string storeName = rdr.GetString(1);
-        Store newStore = new Store(storeName, storeId);
-        stores.Add(newStore);
-      }
-      if (rdr != null)
-      {
-        rdr.Close();
-      }
-      if (conn != null)
-      {
-        conn.Close();
-      }
-      return stores;
-    }
+     SqlParameter brandIdParameter = new SqlParameter();
+     brandIdParameter.ParameterName = "@BrandId";
+     brandIdParameter.Value = this.GetId();
+     cmd.Parameters.Add(brandIdParameter);
+     rdr = cmd.ExecuteReader();
+     while(rdr.Read())
+     {
+       int storeId = rdr.GetInt32(0);
+       string storeName = rdr.GetString(1);
+       Store newStore = new Store(storeName, storeId);
+       stores.Add(newStore);
+     }
+     if(rdr != null)
+     {
+       rdr.Close();
+     }
+     if(conn != null)
+     {
+       conn.Close();
+     }
+     return stores;
+   }
   }
 }

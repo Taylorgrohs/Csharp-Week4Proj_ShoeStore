@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Shoe Stores</title>
+    <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css'>
+  </head>
+  <body>
+    <h1>Add a Brand</h1>
+    <form action="/brands/new" method="post">
+      <label for="brand-name"></label>
+      <input id="brand-name" name="brand-name" type="text">
+      <select name="store-id">
+        @foreach (var store in Model)
+        {
+          <option value="@store.GetId()">@store.GetName()</option>
+        }
+      </select>
+
+      <button type="submit">Add new brand</button>
+    </form>
+    <h4><a href="/stores">View Stores</a></h4>
+    <h4><a href="/brands">View Brands</a></h4>
+    <h4><a href="/">Home</a></h4>
+  </body>
+</html>
