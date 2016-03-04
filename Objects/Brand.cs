@@ -30,7 +30,7 @@ namespace ShoeStore
     {
       SqlConnection conn = DB.Connection();
       conn.Open();
-      SqlCommand cmd = new SqlCommand("DELETE FROM brand; DELETE FROM store_brand; DBCC CHECKIDENT ('brand', RESEED, 0)", conn);
+      SqlCommand cmd = new SqlCommand("DELETE FROM brands; DELETE FROM store_brand; DBCC CHECKIDENT ('brands', RESEED, 0)", conn);
       cmd.ExecuteNonQuery();
     }
 
@@ -56,7 +56,7 @@ namespace ShoeStore
       SqlDataReader rdr = null;
       conn.Open();
 
-      SqlCommand cmd = new SqlCommand("SELECT * FROM brand;", conn);
+      SqlCommand cmd = new SqlCommand("SELECT * FROM brands;", conn);
       rdr = cmd.ExecuteReader();
 
       while(rdr.Read())
@@ -82,7 +82,7 @@ namespace ShoeStore
       SqlDataReader rdr;
       conn.Open();
 
-      SqlCommand cmd = new SqlCommand("INSERT INTO brand(name) OUTPUT INSERTED.id VALUES(@BrandName);", conn);
+      SqlCommand cmd = new SqlCommand("INSERT INTO brands(name) OUTPUT INSERTED.id VALUES(@BrandName);", conn);
 
       SqlParameter nameParameter = new SqlParameter();
       nameParameter.ParameterName = "@BrandName";
@@ -111,7 +111,7 @@ namespace ShoeStore
       SqlDataReader rdr = null;
       conn.Open();
 
-      SqlCommand cmd = new SqlCommand("SELECT * FROM brand WHERE id = @BrandId;", conn);
+      SqlCommand cmd = new SqlCommand("SELECT * FROM brands WHERE id = @BrandId;", conn);
       SqlParameter brandIdParameter = new SqlParameter();
       brandIdParameter.ParameterName = "@BrandId";
       brandIdParameter.Value = id.ToString();
@@ -168,7 +168,7 @@ namespace ShoeStore
      conn.Open();
      List<Store> stores = new List<Store>{};
 
-     SqlCommand cmd = new SqlCommand("SELECT store.* FROM brand JOIN store_brand ON (store_brand.brand_id = brand.id) JOIN store ON (store.id = store_brand.store_id) WHERE brand.id = @BrandId;", conn);
+     SqlCommand cmd = new SqlCommand("SELECT stores.* FROM brands JOIN store_brand ON (store_brand.brand_id = brands.id) JOIN stores ON (stores.id = store_brand.store_id) WHERE brands.id = @BrandId;", conn);
 
      SqlParameter brandIdParameter = new SqlParameter();
      brandIdParameter.ParameterName = "@BrandId";

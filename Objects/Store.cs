@@ -49,7 +49,7 @@ namespace ShoeStore
       SqlDataReader rdr = null;
       conn.Open();
 
-      SqlCommand cmd = new SqlCommand("SELECT * FROM store;", conn);
+      SqlCommand cmd = new SqlCommand("SELECT * FROM stores;", conn);
       rdr = cmd.ExecuteReader();
 
       while(rdr.Read())
@@ -78,7 +78,7 @@ namespace ShoeStore
       SqlDataReader rdr;
       conn.Open();
 
-      SqlCommand cmd = new SqlCommand("INSERT INTO store (name) OUTPUT INSERTED.id VALUES (@StoreName);", conn);
+      SqlCommand cmd = new SqlCommand("INSERT INTO stores (name) OUTPUT INSERTED.id VALUES (@StoreName);", conn);
 
       SqlParameter nameParameter = new SqlParameter();
       nameParameter.ParameterName = "@StoreName";
@@ -105,7 +105,7 @@ namespace ShoeStore
     {
       SqlConnection conn = DB.Connection();
       conn.Open();
-      SqlCommand cmd = new SqlCommand("DELETE FROM store; DBCC CHECKIDENT ('store', RESEED, 0)", conn);
+      SqlCommand cmd = new SqlCommand("DELETE FROM stores; DBCC CHECKIDENT ('stores', RESEED, 0)", conn);
       cmd.ExecuteNonQuery();
     }
 
@@ -115,7 +115,7 @@ namespace ShoeStore
       SqlDataReader rdr = null;
       conn.Open();
 
-      SqlCommand cmd = new SqlCommand("SELECT * FROM store WHERE id = @StoreId;", conn);
+      SqlCommand cmd = new SqlCommand("SELECT * FROM stores WHERE id = @StoreId;", conn);
       SqlParameter storeIdParameter = new SqlParameter();
       storeIdParameter.ParameterName = "@StoreId";
       storeIdParameter.Value = id.ToString();
@@ -149,7 +149,7 @@ namespace ShoeStore
       conn.Open();
       List<Brand> brand = new List<Brand>{};
 
-      SqlCommand cmd = new SqlCommand("SELECT brand.* FROM brand JOIN store_brand ON (brand.id = store_brand.brand_id) JOIN store ON (store_brand.store_id = store.id) WHERE store.id = @StoreId", conn);
+      SqlCommand cmd = new SqlCommand("SELECT brands.* FROM brands JOIN store_brand ON (brands.id = store_brand.brand_id) JOIN stores ON (store_brand.store_id = stores.id) WHERE stores.id = @StoreId", conn);
 
       SqlParameter brandIdParameter = new SqlParameter();
       brandIdParameter.ParameterName = "@StoreId";
@@ -201,7 +201,7 @@ namespace ShoeStore
       SqlConnection conn = DB.Connection();
       conn.Open();
 
-      SqlCommand cmd = new SqlCommand("DELETE FROM store WHERE id = @StoreId; DELETE FROM store_brand WHERE store_id = @StoreId;", conn);
+      SqlCommand cmd = new SqlCommand("DELETE FROM stores WHERE id = @StoreId; DELETE FROM store_brand WHERE store_id = @StoreId;", conn);
 
       SqlParameter storeIdParameter = new SqlParameter();
       storeIdParameter.ParameterName = "@StoreId";
@@ -221,7 +221,7 @@ namespace ShoeStore
       SqlDataReader rdr;
       conn.Open();
 
-      SqlCommand cmd = new SqlCommand("UPDATE store SET name = @NewName OUTPUT INSERTED.name WHERE id = @StoreId;", conn);
+      SqlCommand cmd = new SqlCommand("UPDATE stores SET name = @NewName OUTPUT INSERTED.name WHERE id = @StoreId;", conn);
 
       SqlParameter newNameParameter = new SqlParameter();
       newNameParameter.ParameterName = "@NewName";
