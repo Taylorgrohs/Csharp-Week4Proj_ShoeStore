@@ -82,7 +82,7 @@ namespace ShoeStore
       SqlDataReader rdr;
       conn.Open();
 
-      SqlCommand cmd = new SqlCommand("INSERT INTO brand(name) OUTPUT INSERTED.id VALUES(@BrandName s);", conn);
+      SqlCommand cmd = new SqlCommand("INSERT INTO brand(name) OUTPUT INSERTED.id VALUES(@BrandName);", conn);
 
       SqlParameter nameParameter = new SqlParameter();
       nameParameter.ParameterName = "@BrandName";
@@ -179,8 +179,7 @@ namespace ShoeStore
       {
         int storeId = rdr.GetInt32(0);
         string storeName = rdr.GetString(1);
-        string storeNumber = rdr.GetString(2);
-        Store newStore = new Store(storeName, storeNumber, storeId);
+        Store newStore = new Store(storeName, storeId);
         stores.Add(newStore);
       }
       if (rdr != null)

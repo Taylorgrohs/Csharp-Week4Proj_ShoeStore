@@ -56,8 +56,7 @@ namespace ShoeStore
       {
         int storeId = rdr.GetInt32(0);
         string storeName = rdr.GetString(1);
-        string storeNumber = rdr.GetString(2);
-        Store newStore = new Store(storeName, storeNumber, storeId);
+        Store newStore = new Store(storeName, storeId);
         allStores.Add(newStore);
       }
 
@@ -131,9 +130,8 @@ namespace ShoeStore
       {
         foundStoreId = rdr.GetInt32(0);
         foundStoreName = rdr.GetString(1);
-        foundStoreNumber = rdr.GetString(2);
       }
-      Store foundStore = new Store(foundStoreName, foundStoreNumber, foundStoreId);
+      Store foundStore = new Store(foundStoreName, foundStoreId);
 
       if (rdr != null)
       {
@@ -152,7 +150,7 @@ namespace ShoeStore
       conn.Open();
       List<Brand> brand = new List<Brand>{};
 
-      SqlCommand cmd = new SqlCommand("SELECT brand.* FROM store JOIN store_brand ON (store.id = store_brand.brand_id) JOIN brand ON (store_brand.brand_id = brand.id) WHERE store.id = @StoreId", conn);
+      SqlCommand cmd = new SqlCommand("SELECT brand.* FROM brand JOIN store_brand ON (brand.id = store_brand.brand_id) JOIN store ON (store_brand.store_id = store.id) WHERE store.id = @StoreId", conn);
 
       SqlParameter brandIdParameter = new SqlParameter();
       brandIdParameter.ParameterName = "@StoreId";
