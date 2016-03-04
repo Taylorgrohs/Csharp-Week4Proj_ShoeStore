@@ -113,6 +113,20 @@ namespace ShoeStore
 
         return View["stores.cshtml", allStores];
       };
+      Get["store/edit/{id}"] = parameters =>
+     {
+       Store SelectedStore = Store.Find(parameters.id);
+       return View["store_edit.cshtml", SelectedStore];
+     };
+
+     Patch["store/edit/{id}"] = parameters =>
+     {
+       Store SelectedStore = Store.Find(parameters.id);
+       SelectedStore.Update(Request.Form["store-name"]);
+       List<Store> allStores = Store.GetAll();
+
+       return View["stores.cshtml", allStores];
+     };
     }
   }
 }

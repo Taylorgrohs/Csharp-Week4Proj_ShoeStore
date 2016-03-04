@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Shoe Stores</title>
+    <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css'>
+  </head>
+  <body>
+    <h1>All Stores</h1>
+    @if (@Model.Count == 0)
+    {
+      <p>There are no stores.</p>
+    }
+    <ul>
+      @foreach(var stores in Model)
+      {
+        <li><a href="/stores/@stores.GetId()">@stores.GetName()</a> | <a href="/store/edit/@stores.GetId()">Edit</a> | <a href="/store/delete/@stores.GetId()">Delete</</li>
+      }
+    </ul>
+    <hr>
+    <form action="/stores/delete" method="post">
+      <button type="submit">Clear all stores</button>
+    </form>
+    <h4><a href="/stores/new">Add new Store</a></h4>
+    <h4><a href="/">Home</a></h4>
+  </body>
+</html>
