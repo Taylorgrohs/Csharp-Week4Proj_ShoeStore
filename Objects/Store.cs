@@ -79,17 +79,12 @@ namespace ShoeStore
       SqlDataReader rdr;
       conn.Open();
 
-      SqlCommand cmd = new SqlCommand("INSERT INTO store (name, store_number) OUTPUT INSERTED.id VALUES (@StoreName, @StoreNumber);", conn);
+      SqlCommand cmd = new SqlCommand("INSERT INTO store (name) OUTPUT INSERTED.id VALUES (@StoreName);", conn);
 
       SqlParameter nameParameter = new SqlParameter();
       nameParameter.ParameterName = "@StoreName";
       nameParameter.Value = this.GetName();
       cmd.Parameters.Add(nameParameter);
-
-      SqlParameter storeNumberParameter = new SqlParameter();
-      storeNumberParameter.ParameterName = "@StoreNumber";
-      storeNumberParameter.Value = this.GetStoreNumber();
-      cmd.Parameters.Add(storeNumberParameter);
 
       rdr = cmd.ExecuteReader();
 
@@ -150,14 +145,14 @@ namespace ShoeStore
       }
       return foundStore;
     }
-    public List<Brand> GetBrands()
+    public List<Brand> GetBrand()
     {
       SqlConnection conn = DB.Connection();
       SqlDataReader rdr = null;
       conn.Open();
       List<Brand> brand = new List<Brand>{};
 
-      SqlCommand cmd = new SqlCommand("SELECT brand.* from brand join store_brand on (store_brand.brand_id = s.id) join store s on (s.id = ss.store_id) WHERE s.id = @StoreId", conn);
+      SqlCommand cmd = new SqlCommand("SELECT brand.* FROM store JOIN store_brand ON (store.id = store_brand.brand_id) JOIN brand ON (store_brand.brand_id = brand.id) WHERE store.id = @StoreId", conn);
 
       SqlParameter brandIdParameter = new SqlParameter();
       brandIdParameter.ParameterName = "@StoreId";
@@ -168,8 +163,7 @@ namespace ShoeStore
       {
         int brandId = rdr.GetInt32(0);
         string brandName = rdr.GetString(1);
-        DateTime brandDate = rdr.GetDateTime(2);
-        Brand newBrand= new Brand(brandName, brandDate, brandId);
+        Brand newBrand= new Brand(brandName, brandId);
         brand.Add(newBrand);
       }
       if (rdr != null)
@@ -220,6 +214,38 @@ namespace ShoeStore
       cmd.ExecuteNonQuery();
 
       if (conn != null)
+      {
+        conn.Close();
+      }
+    }
+    public void Update(string newName)
+    {
+      SqlConnection conn = DB.Connection();
+      SqlDataReader rdr;
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("UPDATE store SET name = @NewName OUTPUT INSERTED.name WHERE id = @StoreId;", conn);
+
+      SqlParameter newNameParameter = new SqlParameter();
+      newNameParameter.ParameterName = "@NewName";
+      newNameParameter.Value = newName;
+      cmd.Parameters.Add(newNameParameter);
+
+      SqlParameter storeIdParameter = new SqlParameter();
+      storeIdParameter.ParameterName = "@StoreId";
+      storeIdParameter.Value = this.GetId();
+      cmd.Parameters.Add(storeIdParameter);
+      rdr = cmd.ExecuteReader();
+
+      while(rdr.Read())
+      {
+        this._name = rdr.GetString(0);
+      }
+      if(rdr != null)
+      {
+        rdr.Close();
+      }
+      if(conn != null)
       {
         conn.Close();
       }
