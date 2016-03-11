@@ -30,7 +30,7 @@ namespace ShoeStore
     {
       SqlConnection conn = DB.Connection();
       conn.Open();
-      SqlCommand cmd = new SqlCommand("DELETE FROM brands; DELETE FROM store_brand; DBCC CHECKIDENT ('brands', RESEED, 0)", conn);
+      SqlCommand cmd = new SqlCommand("DELETE FROM brands; DELETE FROM brand_store; DBCC CHECKIDENT ('brands', RESEED, 0)", conn);
       cmd.ExecuteNonQuery();
     }
 
@@ -142,7 +142,7 @@ namespace ShoeStore
       SqlConnection conn = DB.Connection();
       conn.Open();
 
-      SqlCommand cmd = new SqlCommand("INSERT INTO store_brand (store_id, brand_id) VALUES(@StoreId, @BrandId);", conn);
+      SqlCommand cmd = new SqlCommand("INSERT INTO brand_store (store_id, brand_id) VALUES(@StoreId, @BrandId);", conn);
 
       SqlParameter storeIdParameter = new SqlParameter();
       storeIdParameter.ParameterName = "@StoreId";
@@ -168,7 +168,7 @@ namespace ShoeStore
      conn.Open();
      List<Store> stores = new List<Store>{};
 
-     SqlCommand cmd = new SqlCommand("SELECT stores.* FROM brands JOIN store_brand ON (store_brand.brand_id = brands.id) JOIN stores ON (stores.id = store_brand.store_id) WHERE brands.id = @BrandId;", conn);
+     SqlCommand cmd = new SqlCommand("SELECT stores.* FROM brands JOIN brand_store ON (brand_store.brand_id = brands.id) JOIN stores ON (stores.id = brand_store.store_id) WHERE brands.id = @BrandId;", conn);
 
      SqlParameter brandIdParameter = new SqlParameter();
      brandIdParameter.ParameterName = "@BrandId";

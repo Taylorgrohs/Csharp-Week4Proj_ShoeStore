@@ -19,7 +19,7 @@ _this is a many to many project where you can add stores and brands, each store 
 * GO
 * CREATE TABLE stores(id INT IDENTITY(1,1), name VARCHAR(255));
 * CREATE TABLE brands(id INT IDENTITY(1,1), name VARCHAR(255));
-* CREATE TABLE store_brand(id INT IDENTITY(1,1), store_id int, brand_id int));
+* CREATE TABLE brand_store(id INT IDENTITY(1,1), store_id int, brand_id int));
 * GO
 
 ## Support and contact details
